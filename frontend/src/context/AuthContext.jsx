@@ -6,7 +6,18 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('trendkart_user');
-    return savedUser ? JSON.parse(savedUser) : null;
+    if (savedUser) {
+      try {
+        const parsed = JSON.parse(savedUser);
+        if (parsed?.token) {
+          axios.defaults.headers.common['Authorization'] = `Bearer ${parsed.token}`;
+        }
+        return parsed;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
   });
 
   const [loading, setLoading] = useState(false);

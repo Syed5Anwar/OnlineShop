@@ -292,9 +292,9 @@ export const productsData = [
     isNewArrival: false
   },
   {
-    name: 'Tommy Hilfiger Oxford Solid Slim Fit Shirt',
+    name: "Men's Casual Button-Down Shirt Jacket, Khaki, Long Sleeve, Dual Chest Pockets, Relaxed Fit Shacket",
     brand: 'Tommy Hilfiger',
-    description: 'Elevate your casual wardrobe with this pure cotton Oxford shirt featuring signature brand flag embroidery.',
+    description: 'Elevate your casual wardrobe with this pure cotton Oxford shirt with signature brand flag embroidery.',
     price: 560,
     discountPrice: 521,
     discountPercentage: 7,
@@ -302,7 +302,7 @@ export const productsData = [
     numReviews: 120,
     category: 'Fashion',
     images: [
-      'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800'
+      'https://m.media-amazon.com/images/I/31MT8v6VAIL._SS64_.jpg'
     ],
     stockQuantity: 55,
     specifications: [
@@ -315,21 +315,22 @@ export const productsData = [
     isNewArrival: true
   },
   {
-    name: 'Fossil Gen 6 Touchscreen Smartwatch',
-    brand: 'Fossil',
-    description: 'Stainless steel case with brown leather strap. SpO2 sensor, heart rate tracking, Snapdragon Wear 4100+ platform.',
-    price: 23995,
-    discountPrice: 16796,
-    discountPercentage: 30,
+    name: 'Fastrack Gelato Quartz Analog with Chronograph Watch for Guys',
+    brand: 'Fastrack',
+    description: 'Stylish Fastrack Gelato quartz analog watch with chronograph function. Perfect blend of classic design and modern style for men.',
+    price: 2000,
+    discountPrice: 1180,
+    discountPercentage: 41,
     rating: 4.3,
     numReviews: 88,
     category: 'Fashion',
     images: [
-      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800'
+      'https://m.media-amazon.com/images/I/71tNejUr6lL._SX679_.jpg'
     ],
     stockQuantity: 20,
     specifications: [
-      { key: 'Compatibility', value: 'Android & iOS' },
+      { key: 'Movement', value: 'Quartz Analog' },
+      { key: 'Feature', value: 'Chronograph' },
       { key: 'Water Resistance', value: '3 ATM' }
     ],
     isFeatured: true,
@@ -338,22 +339,24 @@ export const productsData = [
     isNewArrival: false
   },
   {
-    name: 'Ray-Ban Aviator Classic Sunglasses',
-    brand: 'Ray-Ban',
-    description: 'Currently one of the most iconic sunglass models in the world. Originally designed for U.S. aviators in 1937.',
-    price: 11590,
-    discountPrice: 9272,
-    discountPercentage: 20,
+    name: 'Stood Soft Square Sunglasses | UV Protected | Polycarbonate | Shiny Finish | Unisex | SG-STD0024',
+    brand: 'Stood',
+    description: 'Stylish soft square sunglasses with UV protection and polycarbonate lenses. Shiny finish, perfect for both men and women.',
+    price: 600,
+    discountPrice: 414,
+    discountPercentage: 31,
     rating: 4.7,
     numReviews: 245,
     category: 'Fashion',
     images: [
-      'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800'
+      'https://m.media-amazon.com/images/I/61TIZif66IL._SX679_.jpg'
     ],
     stockQuantity: 35,
     specifications: [
-      { key: 'Frame', value: 'Gold Metal' },
-      { key: 'Lens', value: 'G-15 Green Classic' }
+      { key: 'Frame', value: 'Soft Square' },
+      { key: 'Lens', value: 'Polycarbonate' },
+      { key: 'UV Protection', value: 'UV Protected' },
+      { key: 'Finish', value: 'Shiny Finish' }
     ],
     isFeatured: false,
     isTrending: true,

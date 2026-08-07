@@ -12,18 +12,39 @@ export const CartProvider = ({ children }) => {
   });
   const [coupon, setCoupon] = useState(null);
 
-  // Sync cart with backend if logged in
-  useEffect(() => {
-    if (user) {
-      fetchUserCart();
+  const getGuestId = () => {
+    let gid = localStorage.getItem('trendkart_guest_id');
+    if (!gid) {
+      gid = 'guest_' + Math.random().toString(36).substring(2, 9) + Date.now();
+      localStorage.setItem('trendkart_guest_id', gid);
     }
+    return gid;
+  };
+
+  // Helper to ensure authorization token or guestId header is present
+  const getAuthConfig = () => {
+    const headers = {};
+    if (user?.token) {
+      headers['Authorization'] = `Bearer ${user.token}`;
+    }
+    const guestId = getGuestId();
+    if (guestId) {
+      headers['x-guest-id'] = guestId;
+    }
+    return { headers };
+  };
+
+  // Initial fetch and sync on mount or user change
+  useEffect(() => {
+    syncAndFetchUserCart();
   }, [user]);
 
-  const fetchUserCart = async () => {
+  const syncAndFetchUserCart = async () => {
     try {
-      const res = await axios.get('/api/cart');
-      if (res.data && res.data.items) {
-        const formattedItems = res.data.items
+      const config = getAuthConfig();
+      const finalRes = await axios.get('/api/cart', config);
+      if (finalRes.data && finalRes.data.items) {
+        const formattedItems = finalRes.data.items
           .filter(item => item.product)
           .map(item => ({
             product: item.product,
@@ -36,7 +57,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Save guest cart to localStorage
+  // Save guest cart backup to localStorage
   useEffect(() => {
     if (!user) {
       localStorage.setItem('trendkart_guest_cart', JSON.stringify(cartItems));
@@ -44,9 +65,12 @@ export const CartProvider = ({ children }) => {
   }, [cartItems, user]);
 
   const addToCart = async (product, quantity = 1) => {
+    const existing = cartItems.find(item => item.product._id === product._id);
+    const newQty = existing ? existing.quantity + quantity : quantity;
+
     setCartItems(prev => {
-      const existing = prev.find(item => item.product._id === product._id);
-      if (existing) {
+      const itemInPrev = prev.find(item => item.product._id === product._id);
+      if (itemInPrev) {
         return prev.map(item =>
           item.product._id === product._id
             ? { ...item, quantity: item.quantity + quantity }
@@ -56,14 +80,10 @@ export const CartProvider = ({ children }) => {
       return [...prev, { product, quantity }];
     });
 
-    if (user) {
-      try {
-        const existing = cartItems.find(item => item.product._id === product._id);
-        const newQty = existing ? existing.quantity + quantity : quantity;
-        await axios.post('/api/cart', { productId: product._id, quantity: newQty });
-      } catch (err) {
-        console.log('API Cart error', err);
-      }
+    try {
+      await axios.post('/api/cart', { productId: product._id, quantity: newQty }, getAuthConfig());
+    } catch (err) {
+      console.log('API Cart error', err);
     }
   };
 
@@ -78,37 +98,30 @@ export const CartProvider = ({ children }) => {
       )
     );
 
-    if (user) {
-      try {
-        await axios.post('/api/cart', { productId, quantity });
-      } catch (err) {
-        console.log('API Cart qty error', err);
-      }
+    try {
+      await axios.post('/api/cart', { productId, quantity }, getAuthConfig());
+    } catch (err) {
+      console.log('API Cart qty error', err);
     }
   };
 
   const removeFromCart = async (productId) => {
     setCartItems(prev => prev.filter(item => item.product._id !== productId));
-    if (user) {
-      try {
-        await axios.delete(`/api/cart/${productId}`);
-      } catch (err) {
-        console.log('API Cart remove error', err);
-      }
+    try {
+      await axios.delete(`/api/cart/${productId}`, getAuthConfig());
+    } catch (err) {
+      console.log('API Cart remove error', err);
     }
   };
 
   const clearCart = async () => {
     setCartItems([]);
     setCoupon(null);
-    if (!user) {
-      localStorage.removeItem('trendkart_guest_cart');
-    } else {
-      try {
-        await axios.delete('/api/cart');
-      } catch (err) {
-        console.log('API Cart clear error', err);
-      }
+    localStorage.removeItem('trendkart_guest_cart');
+    try {
+      await axios.delete('/api/cart', getAuthConfig());
+    } catch (err) {
+      console.log('API Cart clear error', err);
     }
   };
 
