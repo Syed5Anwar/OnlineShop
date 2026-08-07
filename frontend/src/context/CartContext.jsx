@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import { AuthContext } from './AuthContext';
 
 export const CartContext = createContext();
@@ -24,9 +24,6 @@ export const CartProvider = ({ children }) => {
   // Helper to ensure authorization token or guestId header is present
   const getAuthConfig = () => {
     const headers = {};
-    if (user?.token) {
-      headers['Authorization'] = `Bearer ${user.token}`;
-    }
     const guestId = getGuestId();
     if (guestId) {
       headers['x-guest-id'] = guestId;
@@ -42,7 +39,7 @@ export const CartProvider = ({ children }) => {
   const syncAndFetchUserCart = async () => {
     try {
       const config = getAuthConfig();
-      const finalRes = await axios.get('/api/cart', config);
+      const finalRes = await API.get('/cart', config);
       if (finalRes.data && finalRes.data.items) {
         const formattedItems = finalRes.data.items
           .filter(item => item.product)
@@ -81,7 +78,7 @@ export const CartProvider = ({ children }) => {
     });
 
     try {
-      await axios.post('/api/cart', { productId: product._id, quantity: newQty }, getAuthConfig());
+      await API.post('/cart', { productId: product._id, quantity: newQty }, getAuthConfig());
     } catch (err) {
       console.log('API Cart error', err);
     }
@@ -99,7 +96,7 @@ export const CartProvider = ({ children }) => {
     );
 
     try {
-      await axios.post('/api/cart', { productId, quantity }, getAuthConfig());
+      await API.post('/cart', { productId, quantity }, getAuthConfig());
     } catch (err) {
       console.log('API Cart qty error', err);
     }
@@ -108,7 +105,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (productId) => {
     setCartItems(prev => prev.filter(item => item.product._id !== productId));
     try {
-      await axios.delete(`/api/cart/${productId}`, getAuthConfig());
+      await API.delete(`/cart/${productId}`, getAuthConfig());
     } catch (err) {
       console.log('API Cart remove error', err);
     }
@@ -119,7 +116,7 @@ export const CartProvider = ({ children }) => {
     setCoupon(null);
     localStorage.removeItem('trendkart_guest_cart');
     try {
-      await axios.delete('/api/cart', getAuthConfig());
+      await API.delete('/cart', getAuthConfig());
     } catch (err) {
       console.log('API Cart clear error', err);
     }

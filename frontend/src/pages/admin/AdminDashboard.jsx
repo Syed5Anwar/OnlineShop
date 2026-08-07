@@ -17,6 +17,7 @@ import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { FaRupeeSign, FaShoppingBag, FaBox, FaUsers, FaEye } from 'react-icons/fa';
 import AdminLayout from '../../components/AdminLayout';
 import { fetchAdminStats } from '../../services/adminService';
+import { getImageUrl } from '../../services/api';
 
 // Register Chart.js components
 ChartJS.register(
@@ -221,7 +222,7 @@ const AdminDashboard = () => {
                     <td>
                       <div className="d-flex align-items-center gap-2">
                         <img
-                          src={prod.images[0]}
+                          src={getImageUrl(prod.images[0])}
                           alt={prod.name}
                           style={{ width: '32px', height: '32px', objectFit: 'contain' }}
                         />

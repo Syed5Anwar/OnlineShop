@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Table, Badge, Button, Form, Pagination } fro
 import { Link } from 'react-router-dom';
 import { FaDownload, FaDatabase, FaBoxOpen, FaTags, FaRupeeSign, FaStar, FaSearch } from 'react-icons/fa';
 import { fetchProducts, fetchCategories } from '../services/productService';
+import { getImageUrl } from '../services/api';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 
 const OutputPage = () => {
@@ -237,7 +238,7 @@ const OutputPage = () => {
                       <td>
                         <div className="d-flex align-items-center gap-2">
                           <img
-                            src={product.images && product.images[0]}
+                            src={product.images && product.images[0] ? getImageUrl(product.images[0]) : ''}
                             alt={product.name}
                             style={{ width: '40px', height: '40px', objectFit: 'contain' }}
                             className="rounded border bg-white"

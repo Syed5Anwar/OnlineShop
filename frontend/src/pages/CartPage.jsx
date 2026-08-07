@@ -4,6 +4,7 @@ import { Container, Row, Col, Card, Button, Form, Table, Badge } from 'react-boo
 import { FaTrash, FaShoppingBag, FaArrowRight, FaTag } from 'react-icons/fa';
 import { CartContext } from '../context/CartContext';
 import { validateCoupon } from '../services/orderService';
+import { getImageUrl } from '../services/api';
 import { toast } from 'react-toastify';
 
 const CartPage = () => {
@@ -91,7 +92,7 @@ const CartPage = () => {
                       <td>
                         <div className="d-flex align-items-center gap-3">
                           <img
-                            src={product.images[0]}
+                            src={getImageUrl(product.images[0])}
                             alt={product.name}
                             style={{ width: '65px', height: '65px', objectFit: 'contain' }}
                             className="rounded border p-1"

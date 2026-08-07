@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useState } from 'react';
+import API from '../services/api';
 
 export const AuthContext = createContext();
 
@@ -8,11 +8,7 @@ export const AuthProvider = ({ children }) => {
     const savedUser = localStorage.getItem('trendkart_user');
     if (savedUser) {
       try {
-        const parsed = JSON.parse(savedUser);
-        if (parsed?.token) {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${parsed.token}`;
-        }
-        return parsed;
+        return JSON.parse(savedUser);
       } catch (e) {
         return null;
       }
@@ -22,21 +18,12 @@ export const AuthProvider = ({ children }) => {
 
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (user && user.token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
-    } else {
-      delete axios.defaults.headers.common['Authorization'];
-    }
-  }, [user]);
-
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const res = await axios.post('/api/auth/login', { email, password });
+      const res = await API.post('/auth/login', { email, password });
       setUser(res.data);
       localStorage.setItem('trendkart_user', JSON.stringify(res.data));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
       setLoading(false);
       return { success: true, data: res.data };
     } catch (error) {
@@ -51,10 +38,9 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password, mobile) => {
     setLoading(true);
     try {
-      const res = await axios.post('/api/auth/register', { name, email, password, mobile });
+      const res = await API.post('/auth/register', { name, email, password, mobile });
       setUser(res.data);
       localStorage.setItem('trendkart_user', JSON.stringify(res.data));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
       setLoading(false);
       return { success: true, data: res.data };
     } catch (error) {
@@ -69,13 +55,12 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('trendkart_user');
-    delete axios.defaults.headers.common['Authorization'];
   };
 
   const updateProfile = async (profileData) => {
     setLoading(true);
     try {
-      const res = await axios.put('/api/auth/profile', profileData);
+      const res = await API.put('/auth/profile', profileData);
       setUser(res.data);
       localStorage.setItem('trendkart_user', JSON.stringify(res.data));
       setLoading(false);

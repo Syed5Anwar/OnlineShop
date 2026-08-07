@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import { AuthContext } from './AuthContext';
 
 export const WishlistContext = createContext();
@@ -19,7 +19,7 @@ export const WishlistProvider = ({ children }) => {
 
   const fetchUserWishlist = async () => {
     try {
-      const res = await axios.get('/api/wishlist');
+      const res = await API.get('/wishlist');
       if (res.data && res.data.products) {
         setWishlistItems(res.data.products);
       }
@@ -44,7 +44,7 @@ export const WishlistProvider = ({ children }) => {
 
     if (user) {
       try {
-        await axios.post('/api/wishlist/toggle', { productId: product._id });
+        await API.post('/wishlist/toggle', { productId: product._id });
       } catch (err) {
         console.log('Wishlist toggle error', err);
       }

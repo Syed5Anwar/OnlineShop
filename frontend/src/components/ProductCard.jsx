@@ -5,6 +5,7 @@ import { FaHeart, FaShoppingCart, FaEye } from 'react-icons/fa';
 import Rating from './Rating';
 import { CartContext } from '../context/CartContext';
 import { WishlistContext } from '../context/WishlistContext';
+import { getImageUrl } from '../services/api';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useContext(CartContext);
@@ -42,7 +43,7 @@ const ProductCard = ({ product }) => {
       <div className="product-image-container">
         <Link to={`/product/${product._id}`} className="w-100 h-100 d-flex align-items-center justify-content-center">
           <img
-            src={product.images && product.images.length > 0 ? product.images[0] : 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800'}
+            src={product.images && product.images.length > 0 ? getImageUrl(product.images[0]) : 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800'}
             alt={product.name}
             loading="lazy"
             onError={(e) => {

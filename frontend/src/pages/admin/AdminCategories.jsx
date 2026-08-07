@@ -4,6 +4,7 @@ import { FaTags, FaPlus, FaTrash } from 'react-icons/fa';
 import AdminLayout from '../../components/AdminLayout';
 import { fetchCategories } from '../../services/productService';
 import { createCategory, deleteCategory } from '../../services/adminService';
+import { getImageUrl } from '../../services/api';
 import { toast } from 'react-toastify';
 
 const AdminCategories = () => {
@@ -117,7 +118,7 @@ const AdminCategories = () => {
                     <div className="d-flex align-items-center gap-2">
                       {cat.image && (
                         <img
-                          src={cat.image}
+                          src={getImageUrl(cat.image)}
                           alt={cat.name}
                           style={{ width: '32px', height: '32px', objectFit: 'cover' }}
                           className="rounded-circle"

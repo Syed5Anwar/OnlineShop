@@ -3,6 +3,7 @@ import { Table, Badge, Button, Form } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa';
 import AdminLayout from '../../components/AdminLayout';
 import { fetchAllUsers, deleteUser, updateUserRole } from '../../services/adminService';
+import { getImageUrl } from '../../services/api';
 import { toast } from 'react-toastify';
 
 const AdminUsers = () => {
@@ -78,7 +79,7 @@ const AdminUsers = () => {
                 <td className="fw-semibold">
                   <div className="d-flex align-items-center gap-2">
                     <img
-                      src={usr.profileImage || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100'}
+                      src={usr.profileImage ? getImageUrl(usr.profileImage) : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100'}
                       alt={usr.name}
                       style={{ width: '32px', height: '32px', objectFit: 'cover' }}
                       className="rounded-circle"

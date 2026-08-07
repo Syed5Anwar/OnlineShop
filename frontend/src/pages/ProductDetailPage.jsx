@@ -15,6 +15,7 @@ import Rating from '../components/Rating';
 import ProductCard from '../components/ProductCard';
 import CompareModal from '../components/CompareModal';
 import { fetchProductDetails, fetchProducts, addReview } from '../services/productService';
+import { getImageUrl } from '../services/api';
 import { CartContext } from '../context/CartContext';
 import { WishlistContext } from '../context/WishlistContext';
 import { AuthContext } from '../context/AuthContext';
@@ -159,7 +160,7 @@ const ProductDetailPage = () => {
           <Col md={6}>
             <div className="border rounded-4 p-3 bg-light text-center mb-3" style={{ height: '400px' }}>
               <img
-                src={activeImage}
+                src={getImageUrl(activeImage)}
                 alt={product.name}
                 className="w-100 h-100"
                 style={{ objectFit: 'contain' }}
@@ -175,7 +176,7 @@ const ProductDetailPage = () => {
                 {product.images.map((img, idx) => (
                   <img
                     key={idx}
-                    src={img}
+                    src={getImageUrl(img)}
                     alt={`${product.name} ${idx}`}
                     className={`rounded-3 border p-1 cursor-pointer ${
                       activeImage === img ? 'border-primary border-2' : ''

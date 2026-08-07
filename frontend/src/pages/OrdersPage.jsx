@@ -5,6 +5,7 @@ import { FaEye, FaTimes, FaFileInvoice, FaTruck } from 'react-icons/fa';
 import OrderTracker from '../components/OrderTracker';
 import InvoiceModal from '../components/InvoiceModal';
 import { fetchMyOrders, cancelOrder } from '../services/orderService';
+import { getImageUrl } from '../services/api';
 import { toast } from 'react-toastify';
 
 const OrdersPage = () => {
@@ -81,7 +82,7 @@ const OrdersPage = () => {
                   <td>
                     <div className="d-flex align-items-center gap-2">
                       <img
-                        src={order.orderItems[0]?.image}
+                        src={getImageUrl(order.orderItems[0]?.image)}
                         alt={order.orderItems[0]?.name}
                         style={{ width: '40px', height: '40px', objectFit: 'contain' }}
                         className="rounded border"

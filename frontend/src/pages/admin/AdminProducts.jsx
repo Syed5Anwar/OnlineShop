@@ -3,6 +3,7 @@ import { Table, Button, Modal, Form, Row, Col, Badge } from 'react-bootstrap';
 import { FaPlus, FaEdit, FaTrash, FaBox } from 'react-icons/fa';
 import AdminLayout from '../../components/AdminLayout';
 import { fetchProducts, createProduct, deleteProduct } from '../../services/productService';
+import { getImageUrl } from '../../services/api';
 import { toast } from 'react-toastify';
 
 const categories = [
@@ -122,7 +123,7 @@ const AdminProducts = () => {
               <tr key={prod._id}>
                 <td>
                   <img
-                    src={prod.images[0]}
+                    src={getImageUrl(prod.images[0])}
                     alt={prod.name}
                     style={{ width: '45px', height: '45px', objectFit: 'contain' }}
                     className="rounded border p-1"

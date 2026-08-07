@@ -5,6 +5,7 @@ import { FaLock, FaCreditCard, FaMoneyBillWave, FaCheckCircle } from 'react-icon
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import { createOrder } from '../services/orderService';
+import { getImageUrl } from '../services/api';
 import { toast } from 'react-toastify';
 
 const CheckoutPage = () => {
@@ -262,7 +263,7 @@ const CheckoutPage = () => {
                 {cartItems.map((item) => (
                   <div key={item.product._id} className="d-flex align-items-center gap-3 py-2 border-bottom">
                     <img
-                      src={item.product.images[0]}
+                      src={getImageUrl(item.product.images[0])}
                       alt={item.product.name}
                       style={{ width: '50px', height: '50px', objectFit: 'contain' }}
                       className="rounded border"
