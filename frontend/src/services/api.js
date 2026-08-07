@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Get API base URL from environment variable VITE_API_URL or fallback to Render backend
-const rawApiUrl = import.meta.env.VITE_API_URL || 'https://onlineshop1-c5m4.onrender.com/api';
-const baseURL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl.replace(/\/$/, '')}/api`;
+// When frontend and backend are merged on Vercel, API calls use relative '/api'
+const rawApiUrl = import.meta.env.VITE_API_URL || '/api';
+const baseURL = rawApiUrl ? (rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl.replace(/\/$/, '')}/api`) : '/api';
 
 const API = axios.create({
   baseURL,
@@ -17,16 +17,15 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// Helper for formatting image URLs (e.g. /uploads/... from Render backend)
+// Helper for formatting image URLs
 export const getImageUrl = (imagePath) => {
   if (!imagePath) return '';
   if (typeof imagePath !== 'string') return imagePath;
   if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
     return imagePath;
   }
-  const cleanBackend = baseURL.replace(/\/api\/?$/, '').replace(/\/$/, '');
   const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
-  return `${cleanBackend}${cleanPath}`;
+  return cleanPath;
 };
 
 export default API;
